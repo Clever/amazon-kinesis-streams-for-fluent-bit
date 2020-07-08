@@ -130,10 +130,10 @@ func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int 
 		switch tts := ts.(type) {
 		case output.FLBTime:
 			timestamp = tts.Time
-		case uint64:
-			// when ts is of type uint64 it appears to
-			// be the amount of seconds since unix epoch.
-			timestamp = time.Unix(int64(tts), 0)
+		// case uint64:
+		// 	// when ts is of type uint64 it appears to
+		// 	// be the amount of seconds since unix epoch.
+		// 	timestamp = time.Unix(int64(tts), 0)
 		default:
 			timestamp = time.Now()
 		}
