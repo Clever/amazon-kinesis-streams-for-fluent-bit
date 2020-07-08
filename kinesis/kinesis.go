@@ -183,6 +183,7 @@ func (outputPlugin *OutputPlugin) AddRecord(record map[interface{}]interface{}, 
 			logrus.Errorf("[kinesis %d] Could not create timestamp %v\n", outputPlugin.PluginID, err)
 			return fluentbit.FLB_ERROR
 		}
+		fmt.Println("formatted timestamp is", buf.String())
 		record[outputPlugin.timeKey] = buf.String()
 	}
 
