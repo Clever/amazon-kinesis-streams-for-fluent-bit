@@ -136,7 +136,7 @@ func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int 
 		// 	timestamp = time.Unix(int64(tts), 0)
 		// default:
 		timestamp = time.Now()
-		fmt.Println("DEBUG timestamp is ")
+		fmt.Println("DEBUG timestamp is ", timestamp)
 		// }
 
 		retCode := kinesisOutput.AddRecord(record, &timestamp)
