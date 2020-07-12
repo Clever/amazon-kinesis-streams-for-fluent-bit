@@ -130,15 +130,15 @@ func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int 
 		switch tts := ts.(type) {
 		case output.FLBTime:
 			timestamp = tts.Time
-			fmt.Println("DEBUG FLBTime timestamp is ", timestamp)
+			fmt.Println("DEBUG FLBTime timestamp is ", timestamp.Format(time.RFC3339Nano))
 		case uint64:
 			// when ts is of type uint64 it appears to
 			// be the amount of seconds since unix epoch.
 			timestamp = time.Unix(int64(tts), 0)
-			fmt.Println("DEBUG unit64 timestamp is ", timestamp)
+			fmt.Println("DEBUG unit64 timestamp is ", timestamp.Format(time.RFC3339Nano))
 		default:
 			timestamp = time.Now()
-			fmt.Println("DEBUG default timestamp is ", timestamp)
+			fmt.Println("DEBUG default timestamp is ", timestamp.Format(time.RFC3339Nano))
 		}
 
 		retCode := kinesisOutput.AddRecord(record, &timestamp)
