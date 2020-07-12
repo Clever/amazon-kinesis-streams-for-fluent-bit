@@ -122,7 +122,7 @@ func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int 
 
 	for {
 		//Extract Record
-		ret, _, record = output.GetRecord(dec)
+		ret, ts, record = output.GetRecord(dec)
 		if ret != 0 {
 			break
 		}
