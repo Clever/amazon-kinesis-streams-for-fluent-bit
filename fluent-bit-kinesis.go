@@ -109,7 +109,7 @@ func FLBPluginInit(ctx unsafe.Pointer) int {
 func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int {
 	var count int
 	var ret int
-	//var ts interface{}
+	var ts interface{}
 	var timestamp time.Time
 	var record map[interface{}]interface{}
 
@@ -127,17 +127,19 @@ func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int 
 			break
 		}
 
-		// switch tts := ts.(type) {
-		// case output.FLBTime:
-		// 	timestamp = tts.Time
-		// case uint64:
-		// 	// when ts is of type uint64 it appears to
-		// 	// be the amount of seconds since unix epoch.
-		// 	timestamp = time.Unix(int64(tts), 0)
-		// default:
-		timestamp = time.Now()
-		fmt.Println("DEBUG timestamp is ", timestamp)
-		// }
+		switch tts := ts.(type) {
+		case output.FLBTime:
+			timestamp = tts.Time
+			fmt.Println("DEBUG FLBTime timestamp is ", timestamp)
+		case uint64:
+			// when ts is of type uint64 it appears to
+			// be the amount of seconds since unix epoch.
+			timestamp = time.Unix(int64(tts), 0)
+			fmt.Println("DEBUG unit64 timestamp is ", timestamp)
+		default:
+			timestamp = time.Now()
+			fmt.Println("DEBUG default timestamp is ", timestamp)
+		}
 
 		retCode := kinesisOutput.AddRecord(record, &timestamp)
 		if retCode != output.FLB_OK {
