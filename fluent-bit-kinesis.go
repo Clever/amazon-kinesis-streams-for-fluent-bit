@@ -25,6 +25,7 @@ import (
 	"github.com/fluent/fluent-bit-go/output"
 	"github.com/sirupsen/logrus"
 )
+import "syscall"
 
 var (
 	pluginInstances []*kinesis.OutputPlugin
@@ -105,6 +106,14 @@ func FLBPluginInit(ctx unsafe.Pointer) int {
 	return output.FLB_OK
 }
 
+func SyscallNow() (time.Time, error) {
+	var tv syscall.Timeval
+	if e := syscall.Gettimeofday(&tv); e != nil {
+		return time.Time{}, e
+	}
+	return time.Unix(int64(tv.Sec), int64(tv.Usec)*1000), nil
+}
+
 //export FLBPluginFlushCtx
 func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int {
 	var count int
@@ -127,7 +136,11 @@ func FLBPluginFlushCtx(ctx, data unsafe.Pointer, length C.int, tag *C.char) int 
 			break
 		}
 
-		now := time.Now()
+		//now := time.Now()
+		now, err := SyscallNow()
+		if err != nil {
+			now = time.Now()
+		}
 
 		switch tts := ts.(type) {
 		case output.FLBTime:
