@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: amazon-kinesis-streams-for-fluent-bit
+  description: A Fluent Bit output plugin for Kinesis Streams
+  owner: unknown
+spec:
+  type: unknown
+  lifecycle: production
+  owner: unknown
+  system: Clever
